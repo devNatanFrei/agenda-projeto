@@ -12,31 +12,25 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-import environ
+from dotenv import load_dotenv
+import dj_database_url
 
+
+load_dotenv()
 # ponto de partida para os paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # inicializa a leitura do .env
-env = environ.Env(
-    # valores default e cast
-    DEBUG=(bool, False)
-)
-# opcional: carrega automaticamente o .env
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# agora, em vez de hard‑code:
-SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG')
+# DEBUG é False por padrão em produção. Só será True se a variável DEBUG for 'True'.
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # ALLOWED_HOSTS como lista
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
-
-# DATABASES via URL
-DATABASES = {
-    'default': env.db_url('DATABASE_URL')
-}
-
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -47,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
+    'storages',
     'contact',
 ]
 
@@ -88,11 +84,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+    )
 }
+
 
 
 # Password validation
@@ -140,6 +137,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+DEFAULT_FILE_STORAGE = 'storages.backends.s3_boto3.S3Boto3Storage'
+
+SUPABASE_URL = os.environ.get('SUPABASE_URL')
+SUPABASE_BUCKET = os.environ.get('SUPABASE_BUCKET')
+
+AWS_S3_ENDPOINT_URL = f'{SUPABASE_URL}/storage/v1'
+AWS_STORAGE_BUCKET_NAME = SUPABASE_BUCKET
+AWS_S3_ACCESS_KEY_ID = os.environ.get('SUPABASE_SERVICE_KEY')
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get('SUPABASE_SERVICE_KEY')
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = 'public-read'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
