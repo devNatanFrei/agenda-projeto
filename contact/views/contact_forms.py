@@ -24,7 +24,7 @@ def create(request):
             contact = form.save(commit=False)
             contact.owner = request.user
             contact.save()
-            return redirect('contact:index', contact_id= contact.pk)
+            return redirect('contact:contact', contact_id= contact.pk)
 
         return render(
         request,
@@ -59,7 +59,7 @@ def update(request, contact_id):
     
         if form.is_valid():
             contact = form.save()
-            return redirect('contact:update', contact_id= contact.pk)
+            return redirect('contact:contact', contact_id=contact.pk)
 
         return render(
         request,
