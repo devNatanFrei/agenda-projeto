@@ -19,12 +19,17 @@ def create(request):
         'form': form,
         'form_action': form_action,
         }
+        
+        print(form)
     
         if form.is_valid():
+         
             contact = form.save(commit=False)
             contact.owner = request.user
             contact.save()
             return redirect('contact:index')
+        
+        
 
         return render(
         request,
