@@ -191,6 +191,7 @@ class RegisterUpdateForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
     def clean(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
@@ -201,6 +202,7 @@ class RegisterUpdateForm(forms.ModelForm):
                     ValidationError('Senhas não batem')
                 )
         return super().clean()
+    
     def clean_email(self):
         email = self.cleaned_data.get('email')
         current_email = self.instance.email
@@ -211,6 +213,7 @@ class RegisterUpdateForm(forms.ModelForm):
                     ValidationError('Já existe este e-mail', code='invalid')
                 )
         return email
+    
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         if password1:
