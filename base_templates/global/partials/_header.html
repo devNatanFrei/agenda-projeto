@@ -14,7 +14,7 @@
             <form action="{% url 'contact:search' %}" method="GET">
                 <input type="text" 
                 class="search-input" 
-                placeholder="Search" 
+                placeholder="Buscar" 
                 id="search" name="q"
                 value="{{ request.GET.q.strip }}">
             </form>
@@ -26,28 +26,28 @@
                 {% if user.is_authenticated %}
                     <li class="menu-item">
                         <a href="{% url 'contact:create' %}" class="menu-link">
-                            Create
+                            Criar
                         </a>
                     </li>  
                     <li class="menu-item">
                         <a href="{% url 'contact:user_update' %}" class="menu-link">
-                            Profile
+                            Perfil
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="{% url 'contact:logout' %}" class="menu-link">
-                            Logout 
+                            Sair 
                         </a>
                     </li>
                 {% else %}
                     <li class="menu-item">
                         <a href="{% url 'contact:logout' %}" class="menu-link">
-                            Login 
+                            Entrar 
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="{% url 'contact:register' %}" class="menu-link">
-                            Register
+                            Cadastrar
                         </a>
                     </li>
                 {% endif %}

@@ -22,13 +22,13 @@ class ContactForm(forms.ModelForm):
         first_name = self.cleaned_data.get('first_name')
 
         if not first_name:
-            raise ValidationError("First name cannot be empty.", code='invalid')
+            raise ValidationError("Nome não pode estar vazio.", code='invalid')
 
         if any(char.isdigit() for char in first_name):
-            raise ValidationError("First name cannot contain numbers.", code='invalid')
+            raise ValidationError("Nome não pode conter números.", code='invalid')
 
         if not first_name.isalpha():
-            raise ValidationError("First name must contain only alphabetic characters.", code='invalid')
+            raise ValidationError("Nome deve conter apenas caracteres alfabéticos.", code='invalid')
 
         return first_name
 
@@ -36,13 +36,13 @@ class ContactForm(forms.ModelForm):
         last_name = self.cleaned_data.get('last_name')
 
         if not last_name:
-            raise ValidationError("Last name cannot be empty.", code='invalid')
+            raise ValidationError("Sobrenome não pode estar vazio.", code='invalid')
 
         if any(char.isdigit() for char in last_name):
-            raise ValidationError("Last name cannot contain numbers.", code='invalid')
+            raise ValidationError("Sobrenome não pode conter números.", code='invalid')
 
         if not last_name.isalpha():
-            raise ValidationError("Last name must contain only alphabetic characters.", code='invalid')
+            raise ValidationError("Sobrenome deve conter apenas caracteres alfabéticos.", code='invalid')
 
         return last_name
 
@@ -50,13 +50,13 @@ class ContactForm(forms.ModelForm):
         phone = self.cleaned_data.get('phone')
 
         if not phone:
-            raise ValidationError("Phone number cannot be empty.", code='invalid')
+            raise ValidationError("Número de telefone não pode estar vazio.", code='invalid')
 
         if not phone.isdigit():
-            raise ValidationError("Phone number must contain only digits.", code='invalid')
+            raise ValidationError("Número de telefone deve conter apenas dígitos.", code='invalid')
 
         if not (10 <= len(phone) <= 15):
-            raise ValidationError("Phone number must be between 10 and 15 digits long.", code='invalid')
+            raise ValidationError("Número de telefone deve ter entre 10 e 15 dígitos.", code='invalid')
 
         return phone
 
@@ -64,10 +64,10 @@ class ContactForm(forms.ModelForm):
         email = self.cleaned_data.get('email')
 
         if not email:
-            raise ValidationError("Email cannot be empty.", code='invalid')
+            raise ValidationError("E-mail não pode estar vazio.", code='invalid')
 
         if '@' not in email or '.' not in email.split('@')[-1]:
-            raise ValidationError("Enter a valid email address.", code='invalid')
+            raise ValidationError("Insira um endereço de e-mail válido.", code='invalid')
 
         return email
 
@@ -75,7 +75,7 @@ class ContactForm(forms.ModelForm):
         description = self.cleaned_data.get('description')
 
         if not description:
-            raise ValidationError("Description cannot be empty.", code='invalid')
+            raise ValidationError("Descrição não pode estar vazia.", code='invalid')
 
         if len(description) < 10:
             raise ValidationError("Description must be at least 10 characters long.", code='invalid')
